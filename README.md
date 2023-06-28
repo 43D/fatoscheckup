@@ -1,3 +1,3 @@
 # fatoscheckup
 
-Esse bot é puramamnte por diversão
+Esse bot é puramente por diversão
