@@ -59,7 +59,7 @@ class Comandos {
                     "checking": 50
                 };
 
-                saveConfig.save();
+                saveConfig.save(config);
                 await interaction.reply('Pong!');
             }
         };
@@ -90,7 +90,7 @@ class Comandos {
                     return;
                 }
                 delete config.user[id];
-                saveConfig.save();
+                saveConfig.save(config);
                 await interaction.reply('Pong!');
             }
         };
@@ -193,7 +193,7 @@ class Comandos {
                     "checking": checking
                 };
 
-                saveConfig.save();
+                saveConfig.save(config);
 
                 await interaction.reply('Pong!');
             }
@@ -227,7 +227,7 @@ class Comandos {
 
                 config.channel.list.push(channelId);
 
-                saveConfig.save();
+                saveConfig.save(config);
                 await interaction.reply('Pong!');
             }
         };
@@ -261,7 +261,7 @@ class Comandos {
                 }
                 config.channel.list.splice(indice, 1);
 
-                saveConfig.save();
+                saveConfig.save(config);
                 await interaction.reply('Pong!');
             }
         };
@@ -303,7 +303,7 @@ class Comandos {
             async execute(interaction, config, saveConfig) {
                 const { options } = interaction;
                 config.channel.all = options.getBoolean('status');
-                saveConfig.save();
+                saveConfig.save(config);
                 await interaction.reply('Pong!');
             }
         };
@@ -330,7 +330,7 @@ class Comandos {
                 config.random_user.pass = status;
 
                 if (!status) {
-                    saveConfig.save();
+                    saveConfig.save(config);
                     await interaction.reply('Pong! Tudo Certo');
                     return;
                 }
@@ -340,7 +340,7 @@ class Comandos {
                 }
 
                 config.random_user.rng = valor;
-                saveConfig.save();
+                saveConfig.save(config);
                 await interaction.reply('Pong! Tudo Certo');
             }
         };

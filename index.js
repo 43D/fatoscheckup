@@ -35,7 +35,24 @@ client.on('ready', async () => {
     commands.forEach((v, k) => client.application.commands.create(v.data))
 });
 
+client.on('guildCreate', (guild) => {
+    const filePath = `./configs.${guild.id}.json`;
+
+    if (fs.existsSync(filePath)) {
+        console.log('O arquivo já existe.');
+    } else {
+        fs.writeFileSync(filePath, JSON.stringify(config), 'utf-8');
+        console.log('O arquivo foi criado com sucesso.');
+    }
+
+    console.log(`nova guilda: ${guild.id}`);
+});
+
 client.on('interactionCreate', (interaction) => {
+    const filePath = `./configs.${interaction.guildId}.json`;
+    const rawData = fs.readFileSync(filePath);
+    var configGuild = JSON.parse(rawData);
+
     if (!interaction.isCommand()) return;
 
     const { commandName } = interaction;
@@ -43,22 +60,27 @@ client.on('interactionCreate', (interaction) => {
 
     const index = comando_list.indexOf(commandName);
 
-    commands[index].execute(interaction, config, saveConfig());
+    commands[index].execute(interaction, configGuild, saveConfig(filePath));
 });
 
 client.on('messageCreate', (message) => {
-    if (!config.channel.all) {
-        if (!config.channel.list.includes(message.channel.id))
+    const filePath = `./configs.${message.guildId}.json`;
+    const rawData = fs.readFileSync(filePath);
+    var configGuild = JSON.parse(rawData);
+
+
+    if (!configGuild.channel.all) {
+        if (!configGuild.channel.list.includes(message.channel.id))
             return;
     }
 
     console.log("message");
     const rngs = rng();
 
-    if (config.user.hasOwnProperty(message.author.id)) {
-        rngs.rng_custom(message.author.id, message);
-    } else if (config.random_user.pass) {
-        rngs.rng_default(message);
+    if (configGuild.user.hasOwnProperty(message.author.id)) {
+        rngs.rng_custom(message.author.id, message, configGuild);
+    } else if (configGuild.random_user.pass) {
+        rngs.rng_default(message, configGuild);
     }
 
     console.log("message reply");
@@ -66,19 +88,19 @@ client.on('messageCreate', (message) => {
 
 client.login(config.token); // Substitua "TOKEN_DO_SEU_BOT" pelo token do seu bot
 
-function saveConfig() {
-    function save() {
-        const jsonString = JSON.stringify(config);
-        fs.writeFileSync("configs.json", jsonString);
+function saveConfig(filePath) {
+    function save(jsons) {
+        const jsonString = JSON.stringify(jsons);
+        fs.writeFileSync(filePath, jsonString);
     }
 
     return { save }
 }
 
 function rng() {
-    function rng_custom(id, message) {
-        taxa = config.user[id].taxa;
-        check = config.user[id].checking;
+    function rng_custom(id, message, configs) {
+        taxa = configs.user[id].taxa;
+        check = configs.user[id].checking;
         if (verificaSucesso(taxa))
             if (verificaSucesso(check))
                 fake_news(message);
@@ -86,8 +108,8 @@ function rng() {
                 real_news(message);
     }
 
-    function rng_default(message) {
-        if (verificaSucesso(config.random_user.rng))
+    function rng_default(message, configs) {
+        if (verificaSucesso(configs.random_user.rng))
             if (verificaSucesso(50))
                 fake_news(message);
             else
