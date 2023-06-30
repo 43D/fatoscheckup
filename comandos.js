@@ -7,6 +7,11 @@ class Comandos {
         this.createCommands();
     }
 
+    registerCommands(client) {
+        this.getComando().forEach((v, k) =>
+            client.application.commands.create(v.data));
+    }
+
     getComando() {
         return this.comando;
     }
@@ -59,7 +64,7 @@ class Comandos {
                     "checking": 50
                 };
 
-                saveConfig.save(config);
+                saveConfig(config);
                 await interaction.reply('Pong!');
             }
         };
@@ -90,7 +95,7 @@ class Comandos {
                     return;
                 }
                 delete config.user[id];
-                saveConfig.save(config);
+                saveConfig(config);
                 await interaction.reply('Pong!');
             }
         };
@@ -193,7 +198,7 @@ class Comandos {
                     "checking": checking
                 };
 
-                saveConfig.save(config);
+                saveConfig(config);
 
                 await interaction.reply('Pong!');
             }
@@ -227,7 +232,7 @@ class Comandos {
 
                 config.channel.list.push(channelId);
 
-                saveConfig.save(config);
+                saveConfig(config);
                 await interaction.reply('Pong!');
             }
         };
@@ -261,7 +266,7 @@ class Comandos {
                 }
                 config.channel.list.splice(indice, 1);
 
-                saveConfig.save(config);
+                saveConfig(config);
                 await interaction.reply('Pong!');
             }
         };
@@ -303,7 +308,7 @@ class Comandos {
             async execute(interaction, config, saveConfig) {
                 const { options } = interaction;
                 config.channel.all = options.getBoolean('status');
-                saveConfig.save(config);
+                saveConfig(config);
                 await interaction.reply('Pong!');
             }
         };
@@ -330,7 +335,7 @@ class Comandos {
                 config.random_user.pass = status;
 
                 if (!status) {
-                    saveConfig.save(config);
+                    saveConfig(config);
                     await interaction.reply('Pong! Tudo Certo');
                     return;
                 }
@@ -340,7 +345,7 @@ class Comandos {
                 }
 
                 config.random_user.rng = valor;
-                saveConfig.save(config);
+                saveConfig(config);
                 await interaction.reply('Pong! Tudo Certo');
             }
         };
