@@ -1,17 +1,21 @@
 
 class RngService {
-    constructor(axios) {
+    constructor() {
         this.configGuild = null;
-        this.axios = axios;
     }
 
     async handleMessage(message, configGuild) {
         this.configGuild = configGuild;
 
         if (this.configGuild.user.hasOwnProperty(message.author.id))
-            this.rng_custom(message);
+            this.rng_config(message);
         else if (this.configGuild.random_user.pass)
             this.rng_default(message);
+    }
+
+    async handleMessageMentioned(message, configGuild) {
+        this.configGuild = configGuild;
+        this.rng_custom(message, 100);
     }
 
     async realNews(message) {
@@ -26,8 +30,7 @@ class RngService {
 
     async send_image(valorAleatorio, message, msg) {
         try {
-            const response = await this.axios.get(valorAleatorio, { responseType: 'arraybuffer' });
-            await message.reply({ files: [{ attachment: response.data, name: 'imagem.png' }] });
+            await message.reply({ files: [valorAleatorio] });
         } catch (error) {
             message.reply(msg);
         }
@@ -41,9 +44,16 @@ class RngService {
         return false;
     }
 
-    rng_custom(message) {
+    rng_config(message) {
         const taxa = this.configGuild.user[message.author.id].taxa;
         const check = this.configGuild.user[message.author.id].checking;
+        if (this.verificaSucesso(taxa) && this.verificaSucesso(check))
+            this.fakeNews(message);
+        else
+            this.realNews(message);
+    }
+
+    rng_custom(message, taxa = 50, check = 50) {
         if (this.verificaSucesso(taxa) && this.verificaSucesso(check))
             this.fakeNews(message);
         else

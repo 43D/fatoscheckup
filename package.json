@@ -10,7 +10,6 @@
   "author": "Allangamer43D",
   "license": "ISC",
   "dependencies": {
-    "axios": "^1.4.0",
     "discord.js": "^14.11.0"
   },
   "repository": {

@@ -1,5 +1,4 @@
-const { Client, GatewayIntentBits, Partials } = require('discord.js');
-const axios = require('axios');
+const { Client, GatewayIntentBits, Partials, SlashCommandBuilder, EmbedBuilder, MessagePayload } = require('discord.js');
 const fs = require('fs');
 const Comandos = require('./comandos.js');
 const RngService = require('./rngService.js');
@@ -20,8 +19,8 @@ class Bot {
             ],
             partials: [Partials.Channel, Partials.ThreadMember]
         });
-        this.commands = new Comandos();
-        this.rngService = new RngService(axios);
+        this.commands = new Comandos(SlashCommandBuilder, EmbedBuilder, MessagePayload);
+        this.rngService = new RngService();
     }
 
     loadConfig() {
@@ -60,10 +59,30 @@ class Bot {
             comando[index].execute(interaction, configGuild, this.saveConfig.bind(this, filePath));
         });
 
-        this.client.on('messageCreate', (message) => {
+        this.client.on('messageCreate', async (message) => {
             const filePath = `./configs.${message.guildId}.json`;
             this.checkJson(filePath);
             let configGuild = this.loadConfigFile(filePath);
+
+            const isBotMessage = message.author.id === this.client.user.id;
+            const isMentioned = message.mentions.has(this.client.user);
+            const isReply = message.reference && message.reference.messageId;
+
+            if (isReply && !isBotMessage) {
+                try {
+                    const fetchedMessage = await message.channel.messages.fetch(message.reference.messageId);
+                    this.rngService.handleMessageMentioned(fetchedMessage, configGuild);
+                } catch (error) {
+                    console.error('Ocorreu um erro ao buscar ou responder à mensagem:', error);
+                    return;
+                }
+                return;
+            }
+
+            if (isMentioned && !isBotMessage) {
+                this.rngService.handleMessageMentioned(message, configGuild);
+                return;
+            }
 
             if (!configGuild.channel.all) {
                 if (!configGuild.channel.list.includes(message.channel.id)) return;

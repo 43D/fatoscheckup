@@ -351,6 +351,22 @@ class Comandos {
         };
         return data;
     }
+
+
+    /*
+    /
+    / /add_deny_user
+    / /remove_deny_user
+    / /add_deny_channel
+    / /remove_deny_channel
+    / /add_custom_image url fake or real
+    / /list_image
+    / /remove_image index
+    / /path_note
+    / /help
+    / update => list_user and list_channel
+    /
+    */
 }
 
 module.exports = Comandos;
