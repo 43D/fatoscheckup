@@ -1,15 +1,16 @@
 {
-    "token": "Tokens",
+    "token": "tokens",
     "random_user": {
         "pass": true,
         "rng": 1
     },
     "channel": {
         "all": true,
-        "list": []
+        "list": [],
+        "deny":[]
     },
-    "user": {
-    },
+    "user": {},
+    "deny_user": {},
     "img": {
         "fake": [
             "https://media.discordapp.net/attachments/979819174006226995/1123461535306625104/carimbo-de-borracha-grunge-de-noticias-falsas-em-uma-ilustracao-vetorial-de-fundo-branco_139411-1283.png?width=563&height=436",

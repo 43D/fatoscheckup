@@ -68,7 +68,10 @@ class Bot {
             const isMentioned = message.mentions.has(this.client.user);
             const isReply = message.reference && message.reference.messageId;
 
-            if (isReply && !isBotMessage) {
+            if (isMentioned && isReply && !isBotMessage) {
+                const isReplyBot = message.mentions.repliedUser.id === this.client.user.id;
+                if (isReplyBot) return;
+
                 try {
                     const fetchedMessage = await message.channel.messages.fetch(message.reference.messageId);
                     this.rngService.handleMessageMentioned(fetchedMessage, configGuild);
@@ -87,6 +90,9 @@ class Bot {
             if (!configGuild.channel.all) {
                 if (!configGuild.channel.list.includes(message.channel.id)) return;
             }
+
+            if (configGuild.channel.deny.includes(message.channel.id))
+                return;
 
             this.rngService.handleMessage(message, configGuild);
             console.log('Message reply');

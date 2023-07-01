@@ -7,6 +7,9 @@ class RngService {
     async handleMessage(message, configGuild) {
         this.configGuild = configGuild;
 
+        if (this.configGuild.deny_user.hasOwnProperty(message.author.id))
+            return;
+
         if (this.configGuild.user.hasOwnProperty(message.author.id))
             this.rng_config(message);
         else if (this.configGuild.random_user.pass)
@@ -47,17 +50,20 @@ class RngService {
     rng_config(message) {
         const taxa = this.configGuild.user[message.author.id].taxa;
         const check = this.configGuild.user[message.author.id].checking;
-        if (this.verificaSucesso(taxa) && this.verificaSucesso(check))
-            this.fakeNews(message);
-        else
-            this.realNews(message);
+
+        if (this.verificaSucesso(taxa))
+            if (this.verificaSucesso(check))
+                this.fakeNews(message);
+            else
+                this.realNews(message);
     }
 
     rng_custom(message, taxa = 50, check = 50) {
-        if (this.verificaSucesso(taxa) && this.verificaSucesso(check))
-            this.fakeNews(message);
-        else
-            this.realNews(message);
+        if (this.verificaSucesso(taxa))
+            if (this.verificaSucesso(check))
+                this.fakeNews(message);
+            else
+                this.realNews(message);
     }
 
     rng_default(message) {
