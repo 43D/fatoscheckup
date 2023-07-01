@@ -137,17 +137,17 @@ class Comandos {
 
                 let name = {
                     name: "**Name**",
-                    value: "",
+                    value: ".\n",
                     inline: true
                 };
                 let taxa = {
                     name: "**Taxa**",
-                    value: "",
+                    value: ".\n",
                     inline: true
                 };
                 let checking = {
                     name: "**Checkagem**",
-                    value: "",
+                    value: ".\n",
                     inline: true
                 };
 
@@ -167,7 +167,7 @@ class Comandos {
 
                 let deny_name = {
                     name: "**Name**",
-                    value: "",
+                    value: ".\n",
                     inline: true
                 };
 
