@@ -782,7 +782,7 @@ class Comandos {
                         name: "FatosCheckUp",
                         url: "https://github.com/43D/fatoscheckup",
                     })
-                    .setTitle("V.1.3.0")
+                    .setTitle("V.1.4.1")
                     .setURL("https://github.com/43D/fatoscheckup")
                     .setDescription("Bot criado por @allangamer43d\n\nLinks úteis:\n* [Invite me to your guild](https://discord.com/api/oauth2/authorize?client_id=1065452625253892097&permissions=414531967040&scope=bot)\n* [Repository on GitHub](https://github.com/43D/fatoscheckup)")
                     .setTimestamp();
