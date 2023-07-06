@@ -11,9 +11,7 @@ class Bot {
                 GatewayIntentBits.Guilds,
                 GatewayIntentBits.GuildMessages,
                 GatewayIntentBits.GuildMembers,
-                GatewayIntentBits.GuildEmojisAndStickers,
                 GatewayIntentBits.MessageContent,
-                GatewayIntentBits.GuildMessageReactions,
                 GatewayIntentBits.GuildMessageTyping,
                 GatewayIntentBits.GuildIntegrations
             ],
@@ -83,8 +81,12 @@ class Bot {
             }
 
             if (isMentioned && !isBotMessage) {
-                this.rngService.handleMessageMentioned(message, configGuild);
-                return;
+                try {
+                    this.rngService.handleMessageMentioned(message, configGuild);
+                } catch (error) {
+                    console.log(`Error: ${error}`);
+                    return;
+                }
             }
 
             if (!configGuild.channel.all) {
@@ -94,7 +96,12 @@ class Bot {
             if (configGuild.channel.deny.includes(message.channel.id))
                 return;
 
-            this.rngService.handleMessage(message, configGuild);
+            try {
+                this.rngService.handleMessage(message, configGuild);
+            } catch (error) {
+                console.log(`Error: ${error}`);
+            }
+
             console.log('Message reply');
         });
 

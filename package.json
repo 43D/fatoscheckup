@@ -1,6 +1,6 @@
 {
   "name": "fatoscheckup",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Verificador de fatos",
   "main": "bot.js",
   "scripts": {

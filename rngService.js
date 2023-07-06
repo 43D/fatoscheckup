@@ -11,14 +11,14 @@ class RngService {
             return;
 
         if (this.configGuild.user.hasOwnProperty(message.author.id))
-            this.rng_config(message);
+            await this.rng_config(message);
         else if (this.configGuild.random_user.pass)
-            this.rng_default(message);
+            await this.rng_default(message);
     }
 
     async handleMessageMentioned(message, configGuild) {
         this.configGuild = configGuild;
-        this.rng_custom(message, 100);
+        await this.rng_custom(message, 100);
     }
 
     async realNews(message) {
@@ -35,7 +35,16 @@ class RngService {
         try {
             await message.reply({ files: [valorAleatorio] });
         } catch (error) {
-            message.reply(msg);
+            console.log(`Error: ${error}`);
+            this.send_text(message, msg);
+        }
+    }
+
+    async send_text(message, msg) {
+        try {
+            await message.reply(msg);
+        } catch (error2) {
+            console.log(`Error: ${error2}`);
         }
     }
 
@@ -47,31 +56,31 @@ class RngService {
         return false;
     }
 
-    rng_config(message) {
+    async rng_config(message) {
         const taxa = this.configGuild.user[message.author.id].taxa;
         const check = this.configGuild.user[message.author.id].checking;
 
         if (this.verificaSucesso(taxa))
             if (this.verificaSucesso(check))
-                this.fakeNews(message);
+                await this.fakeNews(message);
             else
-                this.realNews(message);
+                await this.realNews(message);
     }
 
-    rng_custom(message, taxa = 50, check = 50) {
+    async rng_custom(message, taxa = 50, check = 50) {
         if (this.verificaSucesso(taxa))
             if (this.verificaSucesso(check))
-                this.fakeNews(message);
+                await this.fakeNews(message);
             else
-                this.realNews(message);
+                await this.realNews(message);
     }
 
-    rng_default(message) {
+    async rng_default(message) {
         if (this.verificaSucesso(this.configGuild.random_user.rng)) {
             if (this.verificaSucesso(50))
-                this.fakeNews(message);
+                await this.fakeNews(message);
             else
-                this.realNews(message);
+                await this.realNews(message);
         }
     }
 }
