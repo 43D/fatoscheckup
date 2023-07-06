@@ -710,6 +710,10 @@ class Comandos {
                     .setTitle("Path Note")
                     .addFields(
                         {
+                            name: "1.4.2",
+                            value: "Arrumado alguns quedas por falta de permissões..."
+                        },
+                        {
                             name: "1.4",
                             value: "**12 Novos comandos:**\n* /add_deny_user\n* /add_deny_channel\n* /remove_deny_user\n* /remove_deny_channel\n* /add_custom_image_sucess\n* /add_custom_image_fail\n* /remove_custom_image_sucess\n* /remove_custom_image_fail\n* /list_images\n* /path_note\n* /help\n* /info",
                         },
@@ -782,7 +786,7 @@ class Comandos {
                         name: "FatosCheckUp",
                         url: "https://github.com/43D/fatoscheckup",
                     })
-                    .setTitle("V.1.4.1")
+                    .setTitle("V.1.4.2")
                     .setURL("https://github.com/43D/fatoscheckup")
                     .setDescription("Bot criado por @allangamer43d\n\nLinks úteis:\n* [Invite me to your guild](https://discord.com/api/oauth2/authorize?client_id=1065452625253892097&permissions=414531967040&scope=bot)\n* [Repository on GitHub](https://github.com/43D/fatoscheckup)")
                     .setTimestamp();
